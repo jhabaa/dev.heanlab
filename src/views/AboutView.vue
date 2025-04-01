@@ -1,23 +1,100 @@
 <script lang="ts" setup>
     import TitleItem  from '@/components/TitleItem.vue';
     import  { use3DBackground } from '@/stores/use3DBackground'
+    import * as THREE from 'three';
+    import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+    import { onMounted } from 'vue';
+    import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
 
-    // change fog density
-    const background3D = use3DBackground()
-     
-    //background.cameraFogFar = 14
-    // background.updatingFogFar = true
-    background3D.cameraZ = 60
-    background3D.updatingCameraZ = true
+    import modelURL from '@/assets/model_me.glb';
+import { titlePosition } from '@/models/TittleItem';
+
+/*     const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 1.6
+    camera.position.y = 1
+
+    const loader = new GLTFLoader();
+    const color = 0xFFFFFF;
+    const intensity = 1;
+    const light = new THREE.AmbientLight(color, intensity);
+    scene.add(light);
+
+    const light2 = new THREE.DirectionalLight(0xffffff, 10);
+    light2.castShadow = true
+    light2.position.y = 10
+    light2.target.x = 0
+    light2.target.y = 1
+    light2.target.z = 2
+    //scene.add(light2)
+
+    const plane_geometry = new THREE.PlaneGeometry(1,3);
+    const plane_material = new THREE.MeshStandardMaterial({ color: 0xffffff, side: THREE.DoubleSide});
+    const plane = new THREE.Mesh(plane_geometry, plane_material)
+    plane.rotateX(1.4)
+    plane.receiveShadow = true;
+    scene.add(plane)
+
+
+    let mixer = new THREE.AnimationMixer()
+    loader.load(modelURL, function (gltf) {
+        scene.add(gltf.scene);
+        //Animation
+        mixer = new THREE.AnimationMixer(gltf.scene)
+        const clip = Object.values(gltf.animations)[0]
+        const action = mixer.clipAction(clip)
+        action.setLoop(THREE.LoopOnce)
+        action.clampWhenFinished = true
+        action.play();
+
+        mixer.addEventListener('finished', () => {
+            console.log ("animaiton finished")
+            // Now, we'll free this memory
+            renderer.dispose()
+            // Now hide and show the text a bit 
+            document.getElementById("render1")?.classList.add("hide")
+        })
+    })
+
+    const renderer = new THREE.WebGLRenderer({
+        antialias:true, 
+        alpha:true
+    });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setAnimationLoop( animate )
+    renderer.shadowMap.enabled = true
+
+    onMounted( () => {
+        document.getElementById("render1").appendChild(renderer.domElement)
+    })
+
+    const gui = new GUI()
+    //Camera gui
+    gui.add(camera.position,'z', -100, 100)
+    gui.add(camera.position,'y', -100, 100)
+    gui.add(camera.position,'x', -100, 100)
+
+    let then = 0;
+    function animate(){
+        const time = performance.now() * 0.001
+        const delta = time - then
+        then = time
+        renderer.render(scene, camera)
+        mixer.update(delta)
+    } */
 
 </script>
 <template>
+
   <div class="wrapper">
-    <TitleItem title="About" subtitle="bio | awards | client | services | contact"></TitleItem>
+
+    <TitleItem title="About" subtitle="bio | awards | client | services | contact" :position="titlePosition.Top"></TitleItem>
+    
+    <Transition>
+        <div id="render1"></div>
+    </Transition>
+   
     <div class="content">
-
-      <img src="../assets/images/me.png">
-
       <p>
           Passionate about innovation and creativity, I specialize in developing cutting-edge solutions at the intersection of <strong>web</strong>, <strong>mobile</strong>, <strong>AI</strong>, and <strong>immersive technologies</strong>. My expertise spans from <strong>full-stack development</strong> to <strong>3D interactive experiences</strong> and advanced software architectures.
       </p>
@@ -54,6 +131,15 @@
 
 <style>
 
+#render1{
+    min-width: 300px;
+    min-height: 500px;
+}
+
+#render1.hide{
+    display: none;
+}
+
 .wrapper{
     padding: 20px;
     display: flex;
@@ -66,6 +152,7 @@
     top: 10px;
     position: relative;
     background-color: unset;
+    z-index: 1;
 }
 
 .content{

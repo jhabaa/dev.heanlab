@@ -2,11 +2,13 @@
 import { RouterLink, RouterView } from 'vue-router'
 import HelloWorld from './components/HelloWorld.vue'
 
+import FogGUIHelper from '@/models/FogGUIHelper'
+
 import * as THREE from 'three';
 import { onMounted } from 'vue';
 import { threadId } from 'worker_threads';
 
-import { use3DBackground } from './stores/use3DBackground';
+import { backgroundPosition, use3DBackground } from './stores/use3DBackground';
 
 import {RectAreaLightUniformsLib} from 'three/examples/jsm/lights/RectAreaLightUniformsLib.js';
 import { RectAreaLightHelper } from 'three/examples/jsm/helpers/RectAreaLightHelper.js'
@@ -18,42 +20,8 @@ import { AfterimagePass } from 'three/examples/jsm/postprocessing/AfterimagePass
 
 const background3D = use3DBackground()
 
-// We use this class to pass to lil-gui
-// so when it manipulates near or far
-// near is never > far and far is never < near
-// Also when lil-gui manipulates color we'll
-// update both the fog and background colors.
-class FogGUIHelper {
 
-fog : any
-backgroundColor : any
 
-constructor(fog, backgroundColor) {
-  this.fog = fog;
-  this.backgroundColor = backgroundColor;
-}
-get near() {
-  return this.fog.near;
-}
-set near(v) {
-  this.fog.near = v;
-  this.fog.far = Math.max(this.fog.far, v);
-}
-get far() {
-  return this.fog.far;
-}
-set far(v) {
-  this.fog.far = v;
-  this.fog.near = Math.min(this.fog.near, v);
-}
-get color() {
-  return `#${this.fog.color.getHexString()}`;
-}
-set color(hexString) {
-  this.fog.color.set(hexString);
-  this.backgroundColor.set(hexString);
-}
-}
 
 
 class ColorGUIHelper {
@@ -73,27 +41,30 @@ class ColorGUIHelper {
 
 
 
-const background = 'black'
+const background = 0x3e3e3e
 
 const scene = new THREE.Scene();
 
 scene.background = new THREE.Color(background)
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.z = 40;
+camera.position.z = 100
 
-const renderer = new THREE.WebGLRenderer();
+
+const renderer = new THREE.WebGLRenderer({
+  antialias:true, 
+  alpha:true
+});
 renderer.setSize(window.innerWidth, window.innerHeight);
 RectAreaLightUniformsLib.init();
 onMounted(()=>{
   document.getElementById("render").appendChild(renderer.domElement);
-
 })
 
 let composer = new EffectComposer(renderer)
 composer.addPass(new RenderPass(scene, camera));
 
 let afterimagePass = new AfterimagePass()
-afterimagePass.uniforms['damp'].value = 0.90
+afterimagePass.uniforms['damp'].value =   0.80
 composer.addPass(afterimagePass);
 
 
@@ -193,7 +164,7 @@ new Point(0xaaaa00, {x:10, y:10, z:23} )
 
 
 
-scene.add(new THREE.Mesh(gound, new THREE.MeshStandardMaterial({color:0x000000, map:texture_cloud})))
+//scene.add(new THREE.Mesh(gound, new THREE.MeshStandardMaterial({color:0x000000, map:texture_cloud})))
 //scene.add(light)
 //scene.add(cameraLight)
 //scene.add(cameraLight.target)
@@ -240,48 +211,40 @@ function animate(){
   camera.position.x = radius * Math.cos( time );
   camera.position.y = radius * Math.sin(time)
 
-  const point1X = 10 * Math.sin(time* 0.3)
-  const point1Y = 2.5 * Math.sin(4* time * 0.3)
+  if(background3D.position == backgroundPosition.down){
+    const point1X = 10 * Math.sin(time* 0.3)
+    const point1Y = 2.5 * Math.sin(4* time * 0.3)
 
-  const point2X = 5 * Math.sin(time* 0.3)
-  const point2Y = 0.5 * Math.sin(7* time * 0.3)
+    const point2X = 5 * Math.sin(time* 0.3)
+    const point2Y = 0.5 * Math.sin(7* time * 0.3)
 
-  points[0].UpdatePosition({x:point1X, y:point1Y, z:21})
-  points[1].UpdatePosition({x:point2X, y:point2Y, z:22})
-  points[2].UpdatePosition({x:(Math.cos( time *0.2) * 10), y:(Math.sin(time * 0.2) * 10), z:22})
+    points[0].UpdatePosition({x:point1X, y:point1Y, z:21})
+    points[1].UpdatePosition({x:point2X, y:point2Y, z:22})
+    points[2].UpdatePosition({x:(Math.cos( time *0.2) * 10), y:(Math.sin(time * 0.2) * 10), z:22})
+  }
+  if (background3D.position == backgroundPosition.up){
+    points[2].UpdatePosition({x:(Math.cos(time)), y:(Math.sin(time)), z:35})
+    points[1].UpdatePosition({x:(Math.cos(-time)), y:(Math.sin(-time)), z : 34})
+  }
+
 
   // Moving 
   // To change for calues
-  if( background3D.updatingCameraZ == true){
-    animateCamera()
+  if( background3D.updatingCameraZ){
+    animateCamera(time)
   }
 }
 
-function animateCamera(){
-  if(camera.position.z < background3D.cameraZ){
-    camera.position.z += 0.1
-    if (camera.position.z >= background3D.cameraZ){
-      camera.psoition.z = background3D.cameraZ
-      background3D.updatingCameraZ = false
-    }
+const cameraSpeedFactor = 0.006
+function animateCamera(time : number){
+  // Linear interpolation
+  camera.position.z = THREE.MathUtils.lerp(camera.position.z, background3D.cameraZ, time * cameraSpeedFactor);
+
+  if (Math.abs(camera.position.z - background3D.cameraZ) < 0.01){
+    camera.position.z = background3D.cameraZ;
+    background3D.updatingCameraZ = false;
   }
 }
-
-function view1(){
-  const startPos = camera.position
-  const endPos = new THREE.Vector3(startPos.x, startPos.y, 50);
-  let elapsedTime = 0; 
-  const duration = 2;
-
-  const delta = new THREE.clock.getDelta();
-  elapsedTime += delta
-
-  let t = elapsedTime / duration
-  if (t < 1 ) t = 1;
-
-  
-}
-
 animate();
 </script>
 
@@ -350,7 +313,6 @@ nav {
   display: flex;
   flex-flow: row nowrap;
   text-align: center;
-  border-radius: 2rem;
   padding-inline: 20px;
   backdrop-filter: blur(2rem);
   -webkit-backdrop-filter: blur(2rem);
@@ -359,8 +321,8 @@ nav {
 nav a.router-link-exact-active {
   color: var(--color-text);
   background-color: rgba(255,255,255,1);
-  border-radius: 2rem;
   color: black;
+  opacity: 1;
 }
 
 

@@ -26,6 +26,7 @@ class Project{
         this.Images = _project.Images;
         this.Git = _project.Git;
     }
+
 }
 
 export default Project;

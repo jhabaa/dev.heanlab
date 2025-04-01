@@ -1,6 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import ProjectsView from '@/views/ProjectsView.vue'
+import ProjectDetailsView from '@/views/ProjectDetailsView.vue'
+
+import { backgroundPosition, use3DBackground } from '@/stores/use3DBackground'
+
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,6 +14,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: HomeView,
+    },
+    {
+      path: '/projects/:name',
+      name: 'projects_details',
+      component: () => import('@/views/ProjectDetailsView.vue')
     },
     {
       path: '/projects',
@@ -24,6 +34,20 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue'),
     },
   ],
+})
+
+router.beforeEach( (to, from) => {
+  const background3D = use3DBackground()
+  if (to.name == "home"){
+    background3D.cameraZ = 40
+    background3D.updatingCameraZ = true
+    background3D.position = backgroundPosition.down
+  }else{
+    background3D.cameraZ = 44
+    background3D.position = backgroundPosition.up
+    background3D.updatingCameraZ = true
+  }
+
 })
 
 export default router

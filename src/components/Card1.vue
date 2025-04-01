@@ -1,14 +1,28 @@
 <script setup lang="ts">
 import  Project  from '@/types/Project'
+import VanillaTilt from 'vanilla-tilt';
+import { onMounted, Transition } from 'vue';
 
 defineProps(['project' as Project])
 function getImageurl(_image: string) {
     return new URL(`/src/assets/images/${_image}`, import.meta.url).href;
 }
+
+onMounted(()=>{
+    // Lets load and init vanilla tilt 
+    const cards = document.querySelectorAll(".card");
+    VanillaTilt.init(cards, {
+        max:25,
+        speed:600,
+        transition: true 
+    })
+})
+
 </script>
 
 <template>
-    <div class="card">
+    <RouterLink :to="`/projects/${project.Name}`">
+        <div class="card">
         <img :src="getImageurl(project.Image)"  alt="" />
         <div class="infos">
             <h1 class="title">
@@ -19,6 +33,8 @@ function getImageurl(_image: string) {
             </h2>
         </div>
     </div>
+    </RouterLink>
+
 </template>
 
 <style scoped>
