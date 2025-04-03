@@ -11,15 +11,15 @@ const splideref = ref<any>(null)
 projectsStore.fetch()
 
 import * as THREE from 'three';
-    import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-    import { onMounted, ref } from 'vue';
-    import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { onMounted, ref } from 'vue';
+import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
 
-    import modelURL from '@/assets/model_me_time_3.glb';
-    import { isTypeQueryNode } from 'typescript';
-    import { titlePosition } from '@/models/TittleItem';
+import modelURL from '@/assets/model_me_time_3.glb';
+import { isTypeQueryNode } from 'typescript';
+import { titlePosition } from '@/models/TittleItem';
 
-    const selectedProject  = ref(Project) 
+const selectedProject  = ref(Project) 
 
 /*     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -178,8 +178,6 @@ import * as THREE from 'three';
 
 </script>
 <template>
-    <div id="back_projects"></div>
-    <div class="c"></div>
     <main>
         <TitleItem title="Projects" subtitle="visual fx | AI | web | mobile | game " :position="titlePosition.Top"></TitleItem>
         <div class="project_infos">
@@ -215,7 +213,10 @@ main{
     height: 100vh;
     padding-top: 10vmin;
     align-items: center;
-    z-index: 3;
+    z-index: 400;
+}
+main::-webkit-scrollbar{
+    display: none;
 }
 
 .list{

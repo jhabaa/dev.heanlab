@@ -47,7 +47,7 @@ const scene = new THREE.Scene();
 
 scene.background = new THREE.Color(background)
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.z = 100
+camera.position.z = 44
 
 
 const renderer = new THREE.WebGLRenderer({
@@ -140,7 +140,13 @@ class Point{
     this.color = color
     this.pointLight = new THREE.PointLight(this.color, 100)
     this.position = position
-    this.material = new THREE.MeshPhysicalMaterial({color : this.color})
+    this.material = new THREE.MeshPhongMaterial({color : this.color})
+   /*  this.material = new THREE.PointsMaterial({
+      size:0.0005,
+      color: this.color,
+      tranparent: true,
+      fog:false
+    }) */
     this.geometry = new THREE.SphereGeometry(0.2, 16,16);
     this.mesh = new THREE.Mesh(this.geometry, this.material);
 
@@ -157,9 +163,9 @@ class Point{
   }
 }
 //Point
-let points : Point[] = [new Point(0xff0000,{x:0, y:0, z:21}), 
-new Point(0x00ff00, {x:4, y:-3, Z:22}),
-new Point(0xaaaa00, {x:10, y:10, z:23} )
+let points : Point[] = [new Point( background3D.position == backgroundPosition.down ? 0xff0000 : 0x0000aa ,{x:0, y:0, z:21}), 
+new Point(background3D.position == backgroundPosition.down ? 0x00ff00 : 0x0000aa, {x:4, y:-3, Z:22}),
+new Point(background3D.position == backgroundPosition.down ? 0xaaaa00 : 0x0000aa, {x:10, y:10, z:23} )
 ]
 
 
@@ -223,8 +229,9 @@ function animate(){
     points[2].UpdatePosition({x:(Math.cos( time *0.2) * 10), y:(Math.sin(time * 0.2) * 10), z:22})
   }
   if (background3D.position == backgroundPosition.up){
-    points[2].UpdatePosition({x:(Math.cos(time)), y:(Math.sin(time)), z:35})
+    points[2].UpdatePosition({x:(Math.cos(time*2 + 10)), y:(Math.sin(time+10)), z:35})
     points[1].UpdatePosition({x:(Math.cos(-time)), y:(Math.sin(-time)), z : 34})
+    points[0].UpdatePosition({x:(Math.sin(-time)), y:(Math.cos(-time)), z : 34})
   }
 
 
@@ -251,30 +258,39 @@ animate();
 <template>
   <div id="render"></div>
   <header>
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">About</RouterLink>
-        <RouterLink to="/projects">Projects</RouterLink>
-      </nav>
+
+        <transition name="fade">
+          <nav>
+            <RouterLink to="/">Home</RouterLink>
+            <RouterLink to="/about">About</RouterLink>
+            <RouterLink to="/projects">Projects</RouterLink>
+          </nav>
+         
+        </transition>
   </header>
 
-  <Transition mode="in-out" name="fade">
+  <RouterView v-slot="{ Component }">
+    <transition name="fade" mode="out-in">
+      <component :is="Component" :key="$route.fullPath"></component>
+    </transition>
+   
+  </RouterView>
 
-      <RouterView />
-   
-   
-  </Transition>
-  
 </template>
 
 <style scoped>
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 1s;
+  transform: translateY(0px);
+  opacity: 1s;
+  transition: all 0.4s ease;
+  
 }
 .fade-enter-from, .fade-leave-to /* .fade-leave-active in <2.1.8 */ {
+  transform: translateY(300px);
   opacity: 0;
+  transition: all .4s ease;
 }
 #render{
   position: fixed;
@@ -288,12 +304,13 @@ header {
   max-height: 100vh;
   position: fixed;
   width: 100%;
-  display: flex;
+  display: block;
   flex-flow: row nowrap;
   justify-content: center;
   padding-block: 1rem;
   top: 10px;
-  z-index: 800;
+  z-index: 800; 
+  padding-inline: unset;
 }
 
 
@@ -310,7 +327,7 @@ nav {
   margin: unset;
   position: relative;
   background-color: rgba(0,0,0,.5);
-  display: flex;
+  display: block;
   flex-flow: row nowrap;
   text-align: center;
   padding-inline: 20px;
@@ -339,7 +356,6 @@ nav a:first-of-type {
   header {
     display: flex;
     place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
   }
 
   .logo {

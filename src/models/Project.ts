@@ -11,6 +11,7 @@ class Project{
     Frames : string; 
     Images: string; 
     Git: string;
+    video:string
 
     constructor(_project : Project){
         this.id = _project.id;
@@ -25,6 +26,7 @@ class Project{
         this.Frames = _project.Frames;
         this.Images = _project.Images;
         this.Git = _project.Git;
+        this.video = _project.video
     }
 
 }

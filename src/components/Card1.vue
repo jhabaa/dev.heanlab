@@ -40,11 +40,17 @@ onMounted(()=>{
 <style scoped>
 .card {
     display: flex;
-    width: clamp(300px, 95vw, 800px);
+    width: clamp(300px, 95vw, 700px);
     aspect-ratio: 19/9;
     position: relative;
-    filter: brightness(.7);
-    -webkit-filter: brightness(.7);
+    filter: grayscale(.7);
+    -webkit-filter: grayscale(.7);
+    z-index: 5;
+    opacity: 1;
+}
+
+a{
+    opacity: 1;
 }
 
 .infos{
@@ -57,8 +63,8 @@ onMounted(()=>{
 }
 .card:hover{
     cursor: pointer;
-    filter: brightness(1);
-    -webkit-filter: brightness(1);
+    filter: grayscale(0);
+    -webkit-filter: grayscale(0);
     transition: all .4s ease-in-out;
 }
 .card:hover .infos{

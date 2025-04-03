@@ -5,19 +5,22 @@ import Project from '@/models/Project';
 
 import { useProjectsStore } from '@/stores/useProjects';
 import type { titlePosition } from '@/models/TittleItem';
+import GithubButton from 'vue-github-button';
 
 const projectsStore = useProjectsStore()
 
     const props = defineProps<{
         title: String,
-        subtitle: String,
-        project: Project | null
-        position: titlePosition
+        subtitle?: String,
+        project?: Project | null
+        position?: titlePosition | null
+        githubLink? : string | null
+        githubText? : string | null
     }>()
 
     onMounted(()=>{
         let t = document.querySelectorAll(".block")
-    if( t){
+/*     if( t){
         window.addEventListener('scroll', (e)=>{
             
         if (window.scrollY > 100){
@@ -37,16 +40,11 @@ const projectsStore = useProjectsStore()
             })
         }
     })
-    }
+    } */
     })
-
-
-
-
-
 </script>
 <template>
-    <div class="wrapper" :class="position">
+    <div class="wrapper-title" :class="position">
        
         <div :class="projectsStore.getSelectedProject ? 'dark' : ''"></div>
         <div :class="position" class="block">
@@ -57,15 +55,21 @@ const projectsStore = useProjectsStore()
              {{ projectsStore.getSelectedProject ? projectsStore.getSelectedProject.Title : subtitle }}
             </h3>
             <div class="content">
-                <p>{{ projectsStore.getSelectedProject?.Description }}</p>
-                
+                <div class="github" v-if="githubLink">
+               <!-- Place this tag where you want the button to render. -->
+                <github-button :href="'https://github.com/jhabaa/'+githubLink" data-color-scheme="no-preference: light_high_contrast; light: dark_dimmed; dark: dark;" data-icon="octicon-eye" data-size="large" data-show-count="true" aria-label="Watch jhabaa/jhabaa on GitHub">Watch</github-button>
             </div>
+            <div class="github" v-else>
+                <github-button href="https://github.com/jhabaa" data-color-scheme="no-preference: light; light: light; dark: dark;" data-size="large" data-show-count="true" aria-label="Follow @jhabaa on GitHub">Visit @jhabaa</github-button>
+            </div>
+            </div>
+           
         </div>
-       
+
     </div>
 </template>
 <style scoped>
-.wrapper{
+.wrapper-title{
     padding: unset;
     margin: unset;
     display: flex;
@@ -73,17 +77,20 @@ const projectsStore = useProjectsStore()
     text-align: left;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     width: 100%;
-    height: 100%;
+    height: fit-content;
     top:0px;
+    position: sticky;
 }
 
-.wrapper.left {
+.wrapper-title.left {
     position: fixed;
 }
 
-.wrapper.top{
+.wrapper-title.top{
+    flex-flow: column nowrap;
     padding-top: 10vmin;
     position: relative;
+    max-height: 400px;
 }
 
 .wrapper .dark{
