@@ -5,7 +5,6 @@ import { titlePosition } from '@/models/TittleItem';
 import router from '@/router';
 import { useProjectsStore } from '@/stores/useProjects';
 import { nextTick, onBeforeMount, onMounted, watch } from 'vue';
-import type { Router } from 'vue-router';
 import { ref } from 'vue';
 import videojs from 'video.js'
 import 'video.js/dist/video-js.css';
@@ -29,7 +28,8 @@ async function onLoad() {
 
 }
 
-function getImageurl(_image: string) {
+function getImageurl(_image: string | undefined) {
+    if (!_image) return
     return new URL(`/src/assets/images/${_image}`, import.meta.url).href;
 } 
 

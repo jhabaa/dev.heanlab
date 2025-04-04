@@ -8,7 +8,7 @@ class FogGUIHelper {
     fog : any
     backgroundColor : any
     
-    constructor(fog, backgroundColor) {
+    constructor(fog: any, backgroundColor : any) {
       this.fog = fog;
       this.backgroundColor = backgroundColor;
     }

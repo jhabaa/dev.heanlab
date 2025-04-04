@@ -6,7 +6,6 @@ import FogGUIHelper from '@/models/FogGUIHelper'
 
 import * as THREE from 'three';
 import { onMounted } from 'vue';
-import { threadId } from 'worker_threads';
 
 import { backgroundPosition, use3DBackground } from './stores/use3DBackground';
 
@@ -17,17 +16,17 @@ import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js';
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js';
 import { AfterimagePass } from 'three/examples/jsm/postprocessing/AfterimagePass.js';
-
 const background3D = use3DBackground()
 
 
-
-
+const mouse = new THREE.Vector2();
+const target = new THREE.Vector2();
+const windowHalf = new THREE.Vector2(window.innerWidth / 2, window.innerHeight / 2);
 
 class ColorGUIHelper {
   object: any
   prop : any
-  constructor(object, prop) {
+  constructor(object: any, prop: any) {
     this.object = object;
     this.prop = prop;
   }
@@ -57,7 +56,21 @@ const renderer = new THREE.WebGLRenderer({
 renderer.setSize(window.innerWidth, window.innerHeight);
 RectAreaLightUniformsLib.init();
 onMounted(()=>{
-  document.getElementById("render").appendChild(renderer.domElement);
+  const renderElement = document.getElementById("render");
+  if (renderElement) {
+    renderElement.appendChild(renderer.domElement);
+  }
+
+  document.addEventListener('mousemove', (event) => {
+    mouse.x = (event.clientX -  windowHalf.x) ;
+    mouse.y =(event.clientY - windowHalf.y) ;
+  }, false);
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+
 })
 
 let composer = new EffectComposer(renderer)
@@ -76,13 +89,13 @@ const texture_point =  loader.load('./assets/images/lensflare0.png')
 texture.colorSpace = THREE.SRGBColorSpace;
 
 //groundlight 
-const ground_light_color = 0x0000ff
-const ground_light_intensity = 5000000
+const ground_light_color = 0x3EE2FF
+const ground_light_intensity = 50
 const ground_light_width = 10
 const ground_light_height = 10
 const ground_light = new THREE.RectAreaLight(ground_light_color, ground_light_intensity, ground_light_width, ground_light_height);
-ground_light.position.set(0, 0, 4);
-ground_light.rotation.x = THREE.MathUtils.degToRad(0);
+ground_light.position.set(0, 0, -1);
+ground_light.rotation.x = THREE.MathUtils.degToRad(180);
 const ground_light_helper = new RectAreaLightHelper(ground_light);
 //ground_light.add(ground_light_helper)
 
@@ -92,7 +105,7 @@ const numberOfcubes = 100
 const material = new THREE.MeshPhysicalMaterial({color:'white'});
 
 const color = 0xeeeeee;
-const intensity = 2;
+const intensity = 5;
 const light = new THREE.AmbientLight(color, intensity);
 
 
@@ -121,7 +134,39 @@ for (let x = 0; x < gridSize; x++) {
 }
 
 // ground
-const gound = new THREE.PlaneGeometry(100,100);
+const cubeMaterial =   new THREE.MeshPhysicalMaterial({
+    metalness: 0.5,
+    roughness: 0.5,
+    envMapIntensity: 0.9, 
+    clearcoat: 0.5,
+    transparent: true,
+    opacity : 0.8,
+    reflectivity: 0.8,
+    ior:0.9,
+    side: THREE.DoubleSide,
+    thickness: 0.1,
+    transmission: 0.9,
+  })
+const cube1 = new THREE.Mesh(
+  new THREE.BoxGeometry(1, 1, 0.5),
+  cubeMaterial
+);
+const cube2 = new THREE.Mesh(
+  new THREE.BoxGeometry(1, 1, 1),
+  cubeMaterial
+);
+
+const cube3 = new THREE.Mesh(
+  new THREE.BoxGeometry(2, 2, 2),
+  cubeMaterial
+);
+
+scene.add(cube1);
+scene.add(cube2);
+scene.add(cube3);
+cube3.position.set(0, -4, 32);
+cube2.position.set(-5, 4, 32);
+cube1.position.set(10, -5, 30);
 
 // Here are my 4 points which turn around 
 class Point{
@@ -163,9 +208,9 @@ class Point{
   }
 }
 //Point
-let points : Point[] = [new Point( background3D.position == backgroundPosition.down ? 0xff0000 : 0x0000aa ,{x:0, y:0, z:21}), 
-new Point(background3D.position == backgroundPosition.down ? 0x00ff00 : 0x0000aa, {x:4, y:-3, Z:22}),
-new Point(background3D.position == backgroundPosition.down ? 0xaaaa00 : 0x0000aa, {x:10, y:10, z:23} )
+let points : Point[] = [new Point( background3D.position == backgroundPosition.down ? 0x3EE2FF : 0x0000aa ,{x:0, y:0, z:21}), 
+new Point(background3D.position == backgroundPosition.down ? 0x3EE2FF : 0x0000aa, {x:4, y:-3, Z:22}),
+new Point(background3D.position == backgroundPosition.down ? 0x3EE2FF : 0x0000aa, {x:10, y:10, z:23} )
 ]
 
 
@@ -190,7 +235,7 @@ scene.fog = new THREE.Fog(background, near, far);
 // !!!!!! Helpers
 
 
-const gui = new GUI();
+/* const gui = new GUI();
 const fogGUIHelper = new FogGUIHelper(scene.fog, scene.background);
 gui.add(fogGUIHelper, 'near', 1, 100).name('Fog Near');
 gui.add(fogGUIHelper, 'far', 1, 100).name('Fog Far');
@@ -199,7 +244,7 @@ gui.addColor(fogGUIHelper, 'color').name('Fog Color');
 gui.add(camera.position, 'z', -100, 100)
 
 gui.addColor(new ColorGUIHelper(light, 'color'), 'value').name('color');
-gui.add(light, 'intensity', 0, 2000, 0.03);
+gui.add(light, 'intensity', 0, 2000, 0.03); */
 
 /* gui.add(points.red, 'intensity', 0, 100, 0.01)
 gui.add(points.red.position, 'x', -50, 50 );
@@ -214,15 +259,31 @@ function animate(){
   const time = performance.now() * 0.001; // time in sec
   const radius = 0.1 ; // camera movement radius
 
-  camera.position.x = radius * Math.cos( time );
-  camera.position.y = radius * Math.sin(time)
+  target.x = (1 -  mouse.x) * 0.0002;
+  target.y = (1 - mouse.y) * 0.0002;
+  camera.rotation.x += (target.x - camera.rotation.x) * 0.05;
+  camera.rotation.y += (target.y - camera.rotation.y) * 0.05;
+ 
+  //Cube movements
+  cube1.rotation.x = time * 0.05;
+  cube1.rotation.y = time * 0.05;
+
+  cube2.rotation.x = time * 0.1;
+  cube2.rotation.y = time * 0.1;
+
+  cube3.rotation.x = time * 0.2;
+  cube3.rotation.y = time * 0.2;
+  cube3.rotation.z = time * 0.2;
+
+/*   camera.position.x = radius * Math.cos( time );
+  camera.position.y = radius * Math.sin(time) */
 
   if(background3D.position == backgroundPosition.down){
     const point1X = 10 * Math.sin(time* 0.3)
     const point1Y = 2.5 * Math.sin(4* time * 0.3)
 
     const point2X = 5 * Math.sin(time* 0.3)
-    const point2Y = 0.5 * Math.sin(7* time * 0.3)
+    const point2Y = 0.1 * Math.sin(7* time * 0.3)
 
     points[0].UpdatePosition({x:point1X, y:point1Y, z:21})
     points[1].UpdatePosition({x:point2X, y:point2Y, z:22})
@@ -242,7 +303,7 @@ function animate(){
   }
 }
 
-const cameraSpeedFactor = 0.006
+const cameraSpeedFactor = 0.0006
 function animateCamera(time : number){
   // Linear interpolation
   camera.position.z = THREE.MathUtils.lerp(camera.position.z, background3D.cameraZ, time * cameraSpeedFactor);
@@ -261,9 +322,20 @@ animate();
 
         <transition name="fade">
           <nav>
-            <RouterLink to="/">Home</RouterLink>
-            <RouterLink to="/about">About</RouterLink>
-            <RouterLink to="/projects">Projects</RouterLink>
+            <div class="pill">
+              <span class="text">Menu</span>
+              <div class="bars">
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+              
+            </div>
+            <div class="links">
+              <RouterLink to="/">Home</RouterLink>
+              <RouterLink to="/about">About</RouterLink>
+              <RouterLink to="/projects">Projects</RouterLink>
+            </div>
           </nav>
          
         </transition>
@@ -327,7 +399,8 @@ nav {
   margin: unset;
   position: relative;
   background-color: rgba(0,0,0,.5);
-  display: block;
+  display: flex;
+  place-items: center;
   flex-flow: row nowrap;
   text-align: center;
   padding-inline: 20px;
@@ -351,8 +424,82 @@ nav a {
 nav a:first-of-type {
   border: 0;
 }
+@media screen and (max-width: 800px) {
+  header {
+    display: flex;
+    text-align: center;
+    height: 100px;
+  }
 
-@media (min-width: 1024px) {
+  .logo {
+    margin: 0 auto 2rem;
+  }
+
+  nav .pill {
+    display: flex;
+    z-index: 100;
+    flex-flow: row nowrap;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 33px;
+    font-weight: 400;
+    color: white;
+  }
+
+  nav .pill .bars > span {
+    display: block;
+    width: 30px;
+    height: 3px;
+    background-color: white;
+    margin: 5px auto;
+    transition: all 0.4s ease-in-out;
+  }
+
+  nav .links {
+    display: none;
+  }
+
+  nav .pill:hover .bars > span:nth-child(1) {
+    transform: rotate(45deg) translate(5px, 5px);
+  }
+  nav .pill:hover .bars > span:nth-child(2) {
+    opacity: 0;
+  }
+  nav .pill:hover .bars > span:nth-child(3) {
+    transform: rotate(-45deg) translate(5px, -5px);
+  }
+  nav .pill:hover {
+    cursor: pointer;
+  }
+
+  nav:hover {
+    flex-flow: column nowrap;
+    height: fit-content;
+    max-height: fit-content;
+    gap: 30px;
+    padding-block: 2rem;
+    transition: all 0.4s ease-in-out;
+  }
+
+  nav:hover .links {
+      display: flex;
+      flex-flow: column nowrap;
+      width: 100%;  
+      font-size: 30px;
+      padding: 0 1rem;
+      gap: 20px;
+      transition: all 0.4s ease;
+  }
+  
+}
+
+@media (min-width: 801px) {
+
+  nav .pill {
+    display: none;
+  }
   header {
     display: flex;
     place-items: center;

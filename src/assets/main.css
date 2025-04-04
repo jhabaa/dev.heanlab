@@ -1,9 +1,16 @@
 @import './base.css';
 
-
+body{
+  display: flex;
+  place-items: center;
+}
 #app {
+  display: flex;
+  flex-direction: column;
   margin: unset;
   font-weight: normal;
+  height: 100%;
+  width: 100%;
 }
 
 a,

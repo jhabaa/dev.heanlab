@@ -17,13 +17,22 @@
     padding: 20px;
     display: inline-block;
     text-align: center;
-    font-family: 'Courrier New', Courier, monospace;
+    font-family: 'JetBrains Mono', monospace;
+    font-optical-sizing: auto;
 }
 h1{
-    font-size: 10ch;
+    font-size: clamp(1rem, 8vw, 10rem);
+    letter-spacing: 5px;
+    font-weight: 200;
+    color: #3EE2FF;
+    text-shadow: #3EE2FF 0px 0px 30px, #3EE2FF 0px 0px 20px, #3EE2FF 0px 0px 10px;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-wrap: nowrap;
 }
 h2{
-    font-size: 4ch;
+    font-size: clamp(20px, 5vw, 5ch);
     letter-spacing: 3px;
 }
 </style>

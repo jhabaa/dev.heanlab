@@ -1,12 +1,7 @@
 <script lang="ts" setup>
-    import TitleItem  from '@/components/TitleItem.vue';
-    import  { use3DBackground } from '@/stores/use3DBackground'
-    import * as THREE from 'three';
-    import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-    import { onBeforeMount, onMounted } from 'vue';
-    import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
+import TitleItem  from '@/components/TitleItem.vue';
+import { onBeforeMount, onMounted } from 'vue';
 
-    import modelURL from '@/assets/model_me.glb';
 import { titlePosition } from '@/models/TittleItem';
 import { useAboutStore } from '@/stores/useAbout';
 
@@ -94,7 +89,7 @@ onBeforeMount( async () => {
 <template>
 
   <div class="wrapper">
-
+    <div class="back"></div>
     <TitleItem title="About" subtitle="bio | awards | client | services | contact" :position="titlePosition.Top"></TitleItem>
     
     <Transition>
@@ -108,7 +103,7 @@ onBeforeMount( async () => {
   </div>
 </template>
 
-<style>
+<style scoped>
 
 #render1{
     min-width: 300px;
@@ -131,7 +126,26 @@ onBeforeMount( async () => {
     top: 10px;
     position: relative;
     background-color: unset;
-    z-index: 1;
+    z-index: 3;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.wrapper .back{
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.184);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: -1;
+    opacity: 1;
+}
+
+.wrapper::-webkit-scrollbar{
+    display: none;
 }
 
 .content{
@@ -141,6 +155,23 @@ onBeforeMount( async () => {
     display: flex;
     flex-flow: column wrap;
     gap: 20px;
+    z-index: 2;
+    padding-bottom: 100px;
+    text-align: justify;
+}
+.content div{
+    gap: 20px;
+    display: flex;
+    flex-flow: column wrap;
+}
+
+.content div h1{
+    font-size: clamp(30px, 3vw, 50px);
+    font-weight: 600;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    color: turquoise;
 }
 
 p{

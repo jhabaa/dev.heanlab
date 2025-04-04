@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import  Project  from '@/types/Project'
+import  Project  from '@/models/Project';
 import VanillaTilt from 'vanilla-tilt';
 import { onMounted, Transition } from 'vue';
 
-defineProps(['project' as Project])
+defineProps<{ project: Project }>()
 function getImageurl(_image: string) {
     return new URL(`/src/assets/images/${_image}`, import.meta.url).href;
 }
@@ -11,7 +11,7 @@ function getImageurl(_image: string) {
 onMounted(()=>{
     // Lets load and init vanilla tilt 
     const cards = document.querySelectorAll(".card");
-    VanillaTilt.init(cards, {
+    VanillaTilt.init(Array.from(cards) as HTMLElement[], {
         max:25,
         speed:600,
         transition: true 

@@ -2,7 +2,7 @@
 import TheWelcome from '../components/TheWelcome.vue'
 import JHName from '../components/JHName.vue'
 import { useProjectsStore } from '@/stores/useProjects'
-
+import Project from '@/models/Project'
 const projectsStore = useProjectsStore()
 const test = projectsStore.test
 

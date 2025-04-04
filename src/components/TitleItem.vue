@@ -10,8 +10,8 @@ import GithubButton from 'vue-github-button';
 const projectsStore = useProjectsStore()
 
     const props = defineProps<{
-        title: String,
-        subtitle?: String,
+        title?: string,
+        subtitle?: string,
         project?: Project | null
         position?: titlePosition | null
         githubLink? : string | null
@@ -144,8 +144,10 @@ const projectsStore = useProjectsStore()
 }
 h1{
     font-size: clamp(50px, 8vw, 70px);
-    opacity: .6;
-
+    opacity: 1;
+    font-weight: 600;
+    text-shadow: #3EE2FF 0px 0px 10px, #3EE2FF 0px 0px 20px, #3EE2FF 0px 0px 30px, #3EE2FF 0px 0px 40px, #3EE2FF 0px 0px 50px;
+    text-transform: uppercase;
 }
 h3{
     font-size: clamp(10px, 2vw, 4ch);

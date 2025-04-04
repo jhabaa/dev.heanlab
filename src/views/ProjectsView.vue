@@ -5,18 +5,11 @@ import TitleItem from '@/components/TitleItem.vue'
 import Card1 from '@/components/Card1.vue'
 //import '@splidejs/vue-splide/css';
 import '@splidejs/splide/css/core';
-import FogGUIHelper from '@/models/FogGUIHelper';
+import { onMounted, ref } from 'vue'
 const projectsStore = useProjectsStore()
 const splideref = ref<any>(null)
 projectsStore.fetch()
 
-import * as THREE from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { onMounted, ref } from 'vue';
-import { GUI } from 'three/examples/jsm/libs/lil-gui.module.min.js';
-
-import modelURL from '@/assets/model_me_time_3.glb';
-import { isTypeQueryNode } from 'typescript';
 import { titlePosition } from '@/models/TittleItem';
 
 const selectedProject  = ref(Project) 
@@ -214,6 +207,9 @@ main{
     padding-top: 10vmin;
     align-items: center;
     z-index: 400;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    overflow-x: hidden;
 }
 main::-webkit-scrollbar{
     display: none;
