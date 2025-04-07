@@ -5,7 +5,7 @@ import HelloWorld from './components/HelloWorld.vue'
 import FogGUIHelper from '@/models/FogGUIHelper'
 
 import * as THREE from 'three';
-import { onMounted } from 'vue';
+import { onMounted , ref} from 'vue';
 
 import { backgroundPosition, use3DBackground } from './stores/use3DBackground';
 
@@ -47,10 +47,9 @@ const scene = new THREE.Scene();
 scene.background = new THREE.Color(background)
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 camera.position.z = 44
-
+camera.focus = 0.1
 
 const renderer = new THREE.WebGLRenderer({
-  antialias:true, 
   alpha:true
 });
 renderer.setSize(window.innerWidth, window.innerHeight);
@@ -314,17 +313,22 @@ function animateCamera(time : number){
   }
 }
 animate();
+
+// Navbar options
+const navbarExtended = ref(false)
 </script>
 
 <template>
   <div id="render"></div>
+  <div class="back" v-if="background3D.position.toString() == '1'">
+  </div>
   <header>
 
         <transition name="fade">
-          <nav>
-            <div class="pill">
+          <nav :class="navbarExtended ? 'extended' : ''" @click="navbarExtended = !navbarExtended">
+            <div class="pill" :class="navbarExtended ? 'extended' : ''">
               <span class="text">Menu</span>
-              <div class="bars">
+              <div class="bars" >
                 <span></span>
                 <span></span>
                 <span></span>
@@ -369,7 +373,19 @@ animate();
   width: 100vw;
   height: 100vh;
   top: 0px;
+  z-index: 1;
+}
 
+.back{
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
+  top: 0px;
+  z-index: 2;
+  background-color: rgba(0,0,0,0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  transition: all 1s ease-in-out;
 }
 header {
   line-height: 1.5;
@@ -409,7 +425,6 @@ nav {
 }
 
 nav a.router-link-exact-active {
-  color: var(--color-text);
   background-color: rgba(255,255,255,1);
   color: black;
   opacity: 1;
@@ -461,20 +476,20 @@ nav a:first-of-type {
     display: none;
   }
 
-  nav .pill:hover .bars > span:nth-child(1) {
+  nav .pill.extended .bars > span:nth-child(1) {
     transform: rotate(45deg) translate(5px, 5px);
   }
-  nav .pill:hover .bars > span:nth-child(2) {
+  nav .pill.extended .bars > span:nth-child(2) {
     opacity: 0;
   }
-  nav .pill:hover .bars > span:nth-child(3) {
+  nav .pill.extended .bars > span:nth-child(3) {
     transform: rotate(-45deg) translate(5px, -5px);
   }
   nav .pill:hover {
     cursor: pointer;
   }
 
-  nav:hover {
+  nav.extended {
     flex-flow: column nowrap;
     height: fit-content;
     max-height: fit-content;
@@ -483,7 +498,7 @@ nav a:first-of-type {
     transition: all 0.4s ease-in-out;
   }
 
-  nav:hover .links {
+  nav.extended .links {
       display: flex;
       flex-flow: column nowrap;
       width: 100%;  

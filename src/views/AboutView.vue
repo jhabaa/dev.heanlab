@@ -93,7 +93,7 @@ onBeforeMount( async () => {
     <TitleItem title="About" subtitle="bio | awards | client | services | contact" :position="titlePosition.Top"></TitleItem>
     
     <Transition>
-        <div id="render1"></div>
+        <div id="render1" class="hide"></div>
     </Transition>
    
     <div class="content">
@@ -124,25 +124,16 @@ onBeforeMount( async () => {
     align-items: center;
     width: 100%;
     top: 10px;
+
     position: relative;
     background-color: unset;
     z-index: 3;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    padding-bottom: 100px;
+    overflow: hidden;
 }
 
-.wrapper .back{
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.184);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    position: fixed;
-    top: 0px;
-    left: 0px;
-    z-index: -1;
-    opacity: 1;
-}
 
 .wrapper::-webkit-scrollbar{
     display: none;

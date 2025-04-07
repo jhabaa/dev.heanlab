@@ -154,4 +154,10 @@ h3{
     letter-spacing: 3px;
     text-transform: uppercase;
 }
+
+@media screen and (max-width: 800px) {
+    .wrapper-title.top{
+        padding-top: 20vmin;
+    }
+}
 </style>

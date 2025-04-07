@@ -93,5 +93,19 @@ img{
     z-index: -1;
 }
 
+@media screen and (max-width: 800px) {
+    .card{
+        aspect-ratio: 16/10;
+        filter: unset;
+    }
+
+    .infos{
+        opacity: 1;
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        max-height: 80px;
+    }
+}
+
 
 </style>

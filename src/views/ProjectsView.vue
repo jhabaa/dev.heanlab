@@ -205,6 +205,7 @@ main{
     width: 100%;
     height: 100vh;
     padding-top: 10vmin;
+    padding-bottom: 20vmin;
     align-items: center;
     z-index: 400;
     scrollbar-width: none;

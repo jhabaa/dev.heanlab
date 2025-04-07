@@ -7,7 +7,7 @@ export const useAboutStore = defineStore('about', () => {
     const data = ref<About | null>(null)
     const fetch = async () => {
         try{
-            const response = await axios.get('http://localhost:8000/getabout')
+            const response = await axios.get('/api/getabout')
             data.value = response.data
         }
         catch (error){

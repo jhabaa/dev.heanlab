@@ -64,21 +64,19 @@ onMounted(async ()=>{
 
 <template>
     <div class="wrapper-project-details">
+        <div class="back"></div>
         <TitleItem :title="project?.Name" :subtitle="project?.keywords" :position="titlePosition.Top" :github-link="project?.Git"></TitleItem>
 
         <div v-if="project?.video">
             <div class="screen">
-                <div v-if="project?.video">
                     <video id="my-video" class="video-js" ref="videoPlayer" controls preload="auto" ></video>
-                </div>
             </div>
         </div>
         
         <div v-else="project?.Image">
             <div class="screen">
-                <img :src="getImageurl(project?.Image)" class="project-image">
+                <img :src="getImageurl(project?.Image)" class="project-image" :alt=" project?.Name ">
             </div>
-                <!-- <img :src="getImageurl(project?.Image)" class="project-image"> -->
         </div>
 
         <div class="project-data">
@@ -95,7 +93,7 @@ onMounted(async ()=>{
 
         <div class="content">
             <span class="brief">[Brief]</span>
-            <p v-html="project?.Description"></p>
+            <div v-html="project?.Description" class="text"></div>
         </div>
 
         <div class="content">
@@ -129,7 +127,7 @@ onMounted(async ()=>{
     overflow-y: scroll;
     max-width: 1500px;
     align-self: center;
-    padding-bottom: 10vmin;
+    padding-bottom: 20vmin;
     gap: 10vmin;
     display: flex;
     flex-flow: column nowrap;
@@ -187,14 +185,13 @@ img{
     flex-flow: column nowrap;
 }
 .screen{
+    display: flex;
     width: 100%;
     aspect-ratio: 16/9;
     background-color: rgba(0, 0, 0, 0.088);
     padding-inline: 10px;
     margin-block: 20px;
-    align-items: center;
-    justify-content: center;
-    align-self: center;
+    place-content: center;
 }
 
 .brief{
@@ -231,7 +228,6 @@ img{
     width: 100%;
     height: 100%;
     object-fit: cover;
-    border-radius: 3rem;
 }
 
 .video-js{
@@ -256,5 +252,30 @@ img{
     text-align: justify;
     text-wrap: pre;
     white-space: wrap;
+    padding-inline: 20px;
+}
+.back{
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.184);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: -1;
+    opacity: 1;
+}
+
+@media screen and (max-width:800px){
+    .content{
+        padding-block: 10px;
+        gap: 20px;
+        font-size: 20px;
+    }
+
+    .brief{
+        font-size: 15px;
+    }
 }
 </style>
