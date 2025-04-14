@@ -7,7 +7,7 @@ export const useAboutStore = defineStore('about', () => {
     const data = ref<About | null>(null)
     const fetch = async () => {
         try{
-            const response = await axios.get('/api/getabout')
+            const response = await axios.get('https://srv.heanlab.com/getabout')
             data.value = response.data
         }
         catch (error){

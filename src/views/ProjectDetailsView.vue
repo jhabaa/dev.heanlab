@@ -24,13 +24,18 @@ async function onLoad() {
     project.value = projectsStore.projects.find(p => 
         p.Name == currentProjectName
     ) as Project
-    
+
+    project.value?.Frames.split(';').forEach(e => {
+            frames.value.push(e)
+    })
 
 }
 
-function getImageurl(_image: string | undefined) {
+function getImageurl(_image: string) {
     if (!_image) return
-    return new URL(`/src/assets/images/${_image}`, import.meta.url).href;
+    console.log(_image)
+    const img_url = `/src/assets/images/${_image}`
+    return new URL(img_url, import.meta.url).href;
 } 
 
 onMounted(async ()=>{
@@ -49,12 +54,7 @@ onMounted(async ()=>{
     });
     }
 
-    // Get project frames
-    if (project){
-        project.value?.Frames.split(';').forEach(e => {
-            frames.value.push(e)
-        })
-    }
+
 })
 
 
@@ -98,14 +98,15 @@ onMounted(async ()=>{
 
         <div class="content">
             <span class="brief">[ selected frames | concept art | media ]</span>
-            <div v-if="project?.Frames" class="project-frames">
+            <div>{{ frames[0] }}</div>
+            <div v-if="project?.Frames?.length" class="project-frames">
                 <div class="project-frames-vertical">
-                    <div v-for="frame in frames.filter(e => e.includes('vertical'))" class="project-frame-vertical">
+                    <div v-for="frame in frames.filter(e => e.includes('vertical'))" :key="frame" class="project-frame-vertical">
                         <img :src="getImageurl(frame)" :alt="frame">
                     </div>
                 </div>
                 <div class="project-frames-horizontal">
-                    <div v-for="frame in frames.filter(e => e.includes('horizontal'))"  class="project-frame-horizontal">
+                    <div v-for="frame in frames.filter(e => e.includes('horizontal'))" :key="frame" class="project-frame-horizontal">
                             <img :src="getImageurl(frame)" :alt="frame">
                     </div>
                 </div>

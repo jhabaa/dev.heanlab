@@ -16,7 +16,7 @@ export const useProjectsStore = defineStore('projects', () => {
 	const fetch = async () => {
 		console.log('Fetching data...')
 		try {
-			const response = await axios.get('/api/getprojects')
+			const response = await axios.get('https://srv.heanlab.com/getprojects')
 			const data = response.data
 			projects.value = data.map((project : Project) => {
 				return new Project(project)
