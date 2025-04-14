@@ -98,7 +98,6 @@ onMounted(async ()=>{
 
         <div class="content">
             <span class="brief">[ selected frames | concept art | media ]</span>
-            <div>{{ frames[0] }}</div>
             <div v-if="project?.Frames?.length" class="project-frames">
                 <div class="project-frames-vertical">
                     <div v-for="frame in frames.filter(e => e.includes('vertical'))" :key="frame" class="project-frame-vertical">
