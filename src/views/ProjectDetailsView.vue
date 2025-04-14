@@ -31,7 +31,7 @@ async function onLoad() {
 
 }
 
-function getImageurl(_image: string) {
+function getImageurl(_image: string | undefined) {
     if (!_image) return
     console.log(_image)
     const img_url = `/src/assets/images/${_image}`
