@@ -29,6 +29,10 @@ class Project{
         this.video = _project.video
     }
 
+    getImageUrl(imageName: string) : string {
+        return new URL(`../assets/${imageName}`, import.meta.url).href;
+    }
+
 }
 
 export default Project;
