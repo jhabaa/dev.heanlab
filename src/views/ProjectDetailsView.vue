@@ -64,7 +64,7 @@ onMounted(async ()=>{
 
 <template>
     <div class="wrapper-project-details">
-        <div class="back"></div>
+
         <TitleItem :title="project?.Name" :subtitle="project?.keywords" :position="titlePosition.Top" :github-link="project?.Git"></TitleItem>
 
         <div v-if="project?.video">

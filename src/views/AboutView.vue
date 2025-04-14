@@ -89,7 +89,6 @@ onBeforeMount( async () => {
 <template>
 
   <div class="wrapper">
-    <div class="back"></div>
     <TitleItem title="About" subtitle="bio | awards | client | services | contact" :position="titlePosition.Top"></TitleItem>
     
     <Transition>
