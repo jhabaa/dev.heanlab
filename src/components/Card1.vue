@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import  Project  from '@/models/Project';
 import VanillaTilt from 'vanilla-tilt';
-import { onMounted, Transition } from 'vue';
+import { onMounted } from 'vue';
 
-defineProps<{ project: Project }>()
+defineProps<{ object: Project | Prototype }>()
 function getImageurl(_image: string) {
     return new URL(`/src/assets/images/${_image}`, import.meta.url).href;
 }
@@ -16,20 +16,22 @@ onMounted(()=>{
         speed:600,
         transition: true 
     })
+
+    // Lets determine the type 
 })
 
 </script>
 
 <template>
-    <RouterLink :to="`/projects/${project.Name}`">
+    <RouterLink :to="`/${object.getMainLink()}/${object.Name}`">
         <div class="card">
-        <img :src="getImageurl(project.Image)"  alt="" />
+        <img :src="getImageurl(object.Image)"  alt="" />
         <div class="infos">
             <h1 class="title">
-                {{ project.Title }}
+                {{ object.Title }}
             </h1>
             <h2 class="description">
-                {{ project.keywords }}
+                {{ object.keywords }}
             </h2>
         </div>
     </div>

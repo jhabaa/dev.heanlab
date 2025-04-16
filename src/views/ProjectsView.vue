@@ -180,7 +180,7 @@ const selectedProject  = ref(Project)
         </div>
         <div class="list">
                 <div v-for="project in projectsStore.projects" :key="project.id">
-                    <Card1 :project="project"></Card1>
+                    <Card1 :object="project"></Card1>
                 </div>
         </div>
 

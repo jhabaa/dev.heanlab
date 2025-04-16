@@ -33,6 +33,9 @@ class Project{
         return new URL(`../assets/${imageName}`, import.meta.url).href;
     }
 
+    getMainLink(){
+        return  "projects"
+    }
 }
 
 export default Project;

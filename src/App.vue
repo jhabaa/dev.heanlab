@@ -339,6 +339,7 @@ const navbarExtended = ref(false)
               <RouterLink to="/">Home</RouterLink>
               <RouterLink to="/about">About</RouterLink>
               <RouterLink to="/projects">Projects</RouterLink>
+              <RouterLink to="/prototypes">Prototypes</RouterLink>
             </div>
           </nav>
          

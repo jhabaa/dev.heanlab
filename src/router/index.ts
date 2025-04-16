@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import ProjectsView from '@/views/ProjectsView.vue'
+import ProtoView from '@/views/ProtoView.vue'
 import ProjectDetailsView from '@/views/ProjectDetailsView.vue'
 
 import { backgroundPosition, use3DBackground } from '@/stores/use3DBackground'
@@ -19,6 +20,16 @@ const router = createRouter({
       path: '/projects/:name',
       name: 'projects_details',
       component: () => import('@/views/ProjectDetailsView.vue')
+    },
+    {
+      path: '/prototypes',
+      name: 'prototypes',
+      component:  ProtoView
+    },
+    {
+      path: '/prototypes/:name',
+      name: 'prototypes_details',
+      component: () => import('@/views/ProtoDetailsView.vue')
     },
     {
       path: '/projects',
