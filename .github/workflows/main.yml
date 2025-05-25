@@ -47,12 +47,12 @@ jobs:
           name: dist
           path: dist/
 
-      - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      - name: Copy file via SSH password
+        uses: appleboy/scp-action@v1
         with:
-          server: ${{ secrets.FTP_SERVER }}
+          host: ${{ secrets.FTP_SERVER}}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: dist/
-          server-dir: /var/www/dev.heanlab/
-          git-ftp-args: --insecure
+          port: 22
+          source: "dist/"
+          target: /var/www/html/dev.heanlab/
