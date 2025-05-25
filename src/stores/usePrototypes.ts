@@ -7,7 +7,7 @@ export const usePrototypeStore = defineStore('prototypes', () => {
     const data = ref<Prototype[]>([]);
     const fetch = async () => {
         try {
-            const response = await axios.get('https://srv.heanlab.com/getproto');
+            const response = await axios.get(import.meta.env.VITE_SERVER_API_URL +'/getproto');
             data.value = response.data.map((prototype: Prototype) => {
                 return new Prototype(prototype);
             });

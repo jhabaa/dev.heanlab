@@ -4,11 +4,18 @@ import { onBeforeMount, onMounted } from 'vue';
 
 import { titlePosition } from '@/models/TittleItem';
 import { useAboutStore } from '@/stores/useAbout';
+import { useTechnologiesStore } from '@/stores/useTechnologies';
+import Award from '@/components/Award.vue';
 
 const aboutStore = useAboutStore()
+const techStore = useTechnologiesStore()
+function getImageurl(_image: string) {
+    return new URL(`/src/assets/images/${_image}`, import.meta.url).href;
+}
 
 onBeforeMount( async () => {
     await aboutStore.fetch()
+    await techStore.fetch()
 })
 
 /*     const scene = new THREE.Scene();
@@ -94,11 +101,66 @@ onBeforeMount( async () => {
     <Transition>
         <div id="render1" class="hide"></div>
     </Transition>
-   
+   <class class="brief">[Bio]</class>
     <div class="content">
         <div v-html="aboutStore.data?.content"></div>
-
     </div>
+    <class class="brief">[Stack]</class>
+    <class class="stack">
+        <div v-for="tech in techStore.data" :key="tech.name" class="logo">
+            <img :src="getImageurl(tech.logo)" :alt="tech.name">
+        </div>
+    </class>
+
+    <class class="brief">[Awards | Recognitions]</class>
+    <div class="stack">
+        <Award :object="{
+            name: 'Python | Basics',
+            logo: 'hackerrank.png',
+            link: 'https://www.hackerrank.com/certificates/0e2a20cc416b'
+        }"></Award>
+        <Award :object="{
+            name: 'Javascript | Basics',
+            logo: 'hackerrank.png',
+            link: 'https://www.hackerrank.com/certificates/iframe/e031cb9efb5e'
+        }"></Award>
+        <Award :object="{
+            name: 'Swift | Expert',
+            logo: 'codingame.png',
+            link: 'https://www.codingame.com/certification/Cr15k0fUmpe9lD8k_2JJEw'
+        }"></Award>
+        <Award :object="{
+            name: 'Hacking | Pentitionner',
+            logo: 'hts.png',
+            link: 'https://www.hackthissite.org/user/view/Hean/'
+        }"></Award>
+        
+    </div>
+
+    <class class="brief">[Booking | Contact | Connect]</class>
+    <div class="stack">
+            <Award :object="{
+        name: 'Email me',
+        logo: 'mail.png',
+        link: 'mailto:jhubert@heanlab.com'
+    }"></Award>
+    <Award :object="{
+        name: '',
+        logo: 'linkedin.png',
+        link: 'https://www.linkedin.com/in/hean/'
+    }"></Award>
+    <Award :object="{
+        name: 'GitHub',
+        logo: 'github.png',
+        link: ''
+    }"></Award>
+    <Award :object="{
+        name: '',
+        logo: 'youtube.png',
+        link: 'https://discord.gg/HeanLab'
+    }"></Award>
+    </div>
+
   </div>
 </template>
 
@@ -168,5 +230,18 @@ p{
     font-size: clamp(20px, 2vw, 30px);
     line-height: 1.5;
     opacity: .8;
+}
+
+.stack{
+    width: 100%;
+    max-width: 1000px;
+    padding: 20px;
+    display: flex;
+    flex-flow: row wrap;
+    gap: 20px;
+    z-index: 2;
+    padding-bottom: 100px;
+    align-items: center;
+    justify-content: center;
 }
 </style>

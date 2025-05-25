@@ -194,10 +194,7 @@ img{
     place-content: center;
 }
 
-.brief{
-    text-transform: uppercase;
-    opacity: .8;
-}
+
 .project-data{
     display: flex;
     text-align: center;
