@@ -55,4 +55,4 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           port: 22
           source: "dist/"
-          target: /var/www/html/dev.heanlab/
+          target: /var/www/dev.heanlab/
