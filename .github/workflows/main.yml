@@ -1,0 +1,35 @@
+stages:
+  - install
+  - build
+
+variables:
+  NODE_ENV: 'production'
+  CACHE_DIR: '.npm'
+
+cache:
+  paths:
+    - $CACHE_DIR/
+
+before_script:
+  - echo "Using Node.js version:"
+  - node --version
+  - echo "Installing dependencies..."
+  - npm ci
+
+install_dependencies:
+  stage: install
+  script:
+    - npm install
+  artifacts:
+    paths:
+      - node_modules/
+
+build:
+  stage: build
+  script:
+    - npm run build
+  artifacts:
+    paths:
+      - dist/
+  only:
+    - main
