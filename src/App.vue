@@ -346,12 +346,16 @@ const navbarExtended = ref(false)
         </transition>
   </header>
 
+  <!-- <div class="upLine"></div> -->
+
   <RouterView v-slot="{ Component }">
     <transition name="fade" mode="out-in">
       <component :is="Component" :key="$route.fullPath"></component>
     </transition>
    
   </RouterView>
+
+  <!-- <div class="downLine"></div> -->
 
 </template>
 
@@ -440,6 +444,26 @@ nav a {
 nav a:first-of-type {
   border: 0;
 }
+
+.upLine{
+  width: 100%;
+  height: 50vh;
+  background-color: black;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 3;
+}
+.downLine{
+  width: 100%;
+  height: 50vh;
+  background-color: black;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 3;
+}
+
 @media screen and (max-width: 800px) {
   header {
     display: flex;

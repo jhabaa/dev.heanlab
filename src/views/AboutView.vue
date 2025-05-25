@@ -102,6 +102,7 @@ onBeforeMount( async () => {
         <div id="render1" class="hide"></div>
     </Transition>
    <class class="brief">[Bio]</class>
+    <img :src="getImageurl('me_desk.jpg')" alt="Working" id="me_working"/>
     <div class="content">
         <div v-html="aboutStore.data?.content"></div>
     </div>
@@ -140,7 +141,7 @@ onBeforeMount( async () => {
     <class class="brief">[Booking | Contact | Connect]</class>
     <div class="stack">
             <Award :object="{
-        name: 'Email me',
+        name: '',
         logo: 'mail.png',
         link: 'mailto:jhubert@heanlab.com'
     }"></Award>
@@ -150,14 +151,19 @@ onBeforeMount( async () => {
         link: 'https://www.linkedin.com/in/hean/'
     }"></Award>
     <Award :object="{
-        name: 'GitHub',
+        name: '',
         logo: 'github.png',
-        link: ''
+        link: 'https://github.com/jhabaa'
+    }"></Award>
+    <Award :object="{
+        name: '',
+        logo: 'gitlab.png',
+        link: 'https://dev.heanlab.com/dashboard/projects/personal'
     }"></Award>
     <Award :object="{
         name: '',
         logo: 'youtube.png',
-        link: 'https://discord.gg/HeanLab'
+        link: 'https://www.youtube.com/channel/UCxH_ZLYyHog1q7Ul7rhXaHg'
     }"></Award>
     </div>
 
@@ -173,6 +179,14 @@ onBeforeMount( async () => {
 
 #render1.hide{
     display: none;
+}
+#me_working{
+    width: 100%;
+    max-width: 800px;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,.2);
+    margin-bottom: 20px;
 }
 
 .wrapper{
@@ -202,7 +216,7 @@ onBeforeMount( async () => {
 
 .content{
     width: 100%;
-    max-width: 1000px;
+    max-width: 2000px;
     padding: 20px;
     display: flex;
     flex-flow: column wrap;
@@ -227,7 +241,7 @@ onBeforeMount( async () => {
 }
 
 p{
-    font-size: clamp(20px, 2vw, 30px);
+    font-size: clamp(20px, 1.4, 30px);
     line-height: 1.5;
     opacity: .8;
 }
@@ -238,10 +252,17 @@ p{
     padding: 20px;
     display: flex;
     flex-flow: row wrap;
-    gap: 20px;
+    gap: 1vw;
     z-index: 2;
     padding-bottom: 100px;
     align-items: center;
     justify-content: center;
 }
+
+@media only screen and (max-width: 800px) {
+    .stack{
+        gap: 20px;
+    }
+}
+
 </style>

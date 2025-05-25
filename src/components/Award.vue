@@ -28,4 +28,7 @@ defineProps<{  object : Award}>()
         flex-flow: column nowrap;
         justify-content: center;
     }
+    .title{
+        font-size: .6rem;
+    }
 </style>

@@ -13,7 +13,9 @@ const projects : Project[] = projectsStore.projects
 
 <template>
   <main>
+
     <JHName />
+
   </main>
 </template>
 
@@ -24,5 +26,8 @@ main{
   padding: unset;
   margin: unset;
   z-index: 2;
+  height: 100%;
+  width: 100%;
 }
+
 </style>

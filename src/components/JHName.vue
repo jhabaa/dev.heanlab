@@ -16,7 +16,10 @@ console.log(import.meta.env.VITE_APP_VERSION )
 <style scoped>
 .wrapper {
     padding: 20px;
-    display: inline-block;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    height: 100vh;
     text-align: center;
     font-family: 'JetBrains Mono', monospace;
     font-optical-sizing: auto;
