@@ -1,35 +1,45 @@
-stages:
-  - install
-  - build
+name: CI Workflow
 
-variables:
-  NODE_ENV: 'production'
-  CACHE_DIR: '.npm'
+on:
+  push:
+    branches:
+      - main-develop
+  pull_request:
+    branches:
+      - main-develop
+      
+jobs:
+  install_dependencies:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-cache:
-  paths:
-    - $CACHE_DIR/
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
 
-before_script:
-  - echo "Using Node.js version:"
-  - node --version
-  - echo "Installing dependencies..."
-  - npm ci
+      - name: Install dependencies
+        run: npm install
 
-install_dependencies:
-  stage: install
-  script:
-    - npm install
-  artifacts:
-    paths:
-      - node_modules/
+  build:
+    runs-on: ubuntu-latest
+    needs: install_dependencies
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
 
-build:
-  stage: build
-  script:
-    - npm run build
-  artifacts:
-    paths:
-      - dist/
-  only:
-    - main
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+
+      - name: Build project
+        run: npm run build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist
+          path: dist/

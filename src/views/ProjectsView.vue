@@ -1,18 +1,18 @@
 <script lang="ts" setup>
-import { useProjectsStore } from '@/stores/useProjects'
-import  Project  from '@/models/Project'
-import TitleItem from '@/components/TitleItem.vue'
-import Card1 from '@/components/Card1.vue'
+import { useProjectsStore } from "@/stores/useProjects";
+import Project from "@/models/Project";
+import TitleItem from "@/components/TitleItem.vue";
+import Card1 from "@/components/Card1.vue";
 //import '@splidejs/vue-splide/css';
-import '@splidejs/splide/css/core';
-import { onMounted, ref } from 'vue'
-const projectsStore = useProjectsStore()
-const splideref = ref<any>(null)
-projectsStore.fetch()
+import "@splidejs/splide/css/core";
+import { onMounted, ref } from "vue";
+const projectsStore = useProjectsStore();
+const splideref = ref<any>(null);
+projectsStore.fetch();
 
-import { titlePosition } from '@/models/TittleItem';
+import { titlePosition } from "@/models/TittleItem";
 
-const selectedProject  = ref(Project) 
+const selectedProject = ref(Project);
 
 /*     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -81,7 +81,6 @@ const selectedProject  = ref(Project)
         action.play();
     })
  */
-
 
 /*     function getImageURL(name:String){
         return new URL(`/src/assets/images/${name}`, import.meta.url).href
@@ -168,63 +167,63 @@ const selectedProject  = ref(Project)
         projectsStore.selectedProject = null
     }
  */
-
 </script>
 <template>
-    <main>
-        <TitleItem title="Projects" subtitle="visual fx | AI | web | mobile | game " :position="titlePosition.Top"></TitleItem>
-        <div class="project_infos">
-            <div class="content">
-                <h1></h1>
-            </div>
-        </div>
-        <div class="list">
-                <div v-for="project in projectsStore.projects" :key="project.id">
-                    <Card1 :object="project"></Card1>
-                </div>
-        </div>
-
-    </main>
-
+  <main>
+    <TitleItem
+      title="Projects"
+      subtitle="visual fx | AI | web | mobile | game "
+      :position="titlePosition.Top"
+    ></TitleItem>
+    <div class="project_infos">
+      <div class="content">
+        <h1></h1>
+      </div>
+    </div>
+    <div class="list">
+      <div v-for="project in projectsStore.projects" :key="project.id">
+        <Card1 :object="project"></Card1>
+      </div>
+    </div>
+  </main>
 </template>
 
 <style scoped>
+#back_projects {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: 2;
+}
+main {
+  display: flex;
+  justify-content: space-around;
+  flex-flow: column nowrap;
+  padding: unset;
+  margin: unset;
+  width: 100%;
+  height: 100vh;
+  padding-top: 10vmin;
+  padding-bottom: 20vmin;
+  align-items: center;
+  z-index: 400;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  overflow-x: hidden;
+}
+main::-webkit-scrollbar {
+  display: none;
+}
 
-#back_projects{
-    width: 100vw;
-    height: 100vh;
-    position: fixed;
-    z-index: 2;
-}
-main{
-    display: flex;
-    justify-content: space-around;
-    flex-flow: column nowrap;
-    padding: unset;
-    margin: unset;
-    width: 100%;
-    height: 100vh;
-    padding-top: 10vmin;
-    padding-bottom: 20vmin;
-    align-items: center;
-    z-index: 400;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    overflow-x: hidden;
-}
-main::-webkit-scrollbar{
-    display: none;
-}
-
-.list{
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: calc(50px + 2vmin);
-    width: 100%;
-    max-width: 1900px;
-    scrollbar-width: none;
-    padding-inline: 20px;
+.list {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: calc(50px + 2vmin);
+  width: 100%;
+  max-width: 1900px;
+  scrollbar-width: none;
+  padding-inline: 20px;
 }
 </style>

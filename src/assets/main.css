@@ -1,6 +1,6 @@
-@import './base.css';
+@import "./base.css";
 
-body{
+body {
   display: flex;
   place-items: center;
 }
@@ -16,7 +16,7 @@ body{
   -ms-overflow-style: none; /* IE and Edge */
 }
 
-#app::-webkit-scrollbar{
+#app::-webkit-scrollbar {
   display: none;
 }
 
@@ -25,19 +25,19 @@ a,
   text-decoration: none;
   color: rgb(255, 255, 255);
   transition: 0.4s;
-  opacity: .6;
+  opacity: 0.6;
 }
 
-.splide__arrows{
+.splide__arrows {
   position: fixed;
-  bottom:10px;
+  bottom: 10px;
   left: 45%;
   z-index: 10;
 }
 
-.brief{
-    text-transform: uppercase;
-    opacity: .8;
+.brief {
+  text-transform: uppercase;
+  opacity: 0.8;
 }
 
 @media (hover: hover) {

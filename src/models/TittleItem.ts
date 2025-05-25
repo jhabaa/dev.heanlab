@@ -1,7 +1,7 @@
-enum titlePosition{
-    Center = "center",
-    Left = "left",
-    Top = "top"
+enum titlePosition {
+  Center = "center",
+  Left = "left",
+  Top = "top",
 }
 
-export { titlePosition } 
+export { titlePosition };
