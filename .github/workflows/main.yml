@@ -54,5 +54,5 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: dist/
-          server-dir: /var/www/dev.heanlab
+          server-dir: /var/www/dev.heanlab/
           git-ftp-args: --insecure
