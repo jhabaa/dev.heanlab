@@ -1,4 +1,10 @@
+[![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-highlight.svg)](https://sonarcloud.io/summary/new_code?id=jhabaa_dev.heanlab)
+
 # heanlab_front
+
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=jhabaa_dev.heanlab&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=jhabaa_dev.heanlab)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=jhabaa_dev.heanlab&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=jhabaa_dev.heanlab)
+[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=jhabaa_dev.heanlab&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=jhabaa_dev.heanlab)
 
 This template should help get you started developing with Vue 3 in Vite.
 
