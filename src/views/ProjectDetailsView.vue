@@ -32,9 +32,7 @@ async function onLoad() {
 
 function getImageurl(_image: string | undefined) {
   if (!_image) return;
-  console.log(_image);
-  const img_url = `/src/assets/images/${_image}`;
-  return img_url;
+  return new URL(`/src/assets/images/${_image}`, import.meta.url).href;
 }
 
 onMounted(async () => {
